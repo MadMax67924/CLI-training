@@ -37,7 +37,7 @@ func sum(num1, num2 float64) {
 func sustract(num1, num2 float64) {
 	var resultadosustract float64
 	resultadosustract = num1 - num2
-	fmt.Println("The result is: ", resultadosustract)
+	fmt.Println("The result is: " , resultadosustract)
 	return
 }
 
