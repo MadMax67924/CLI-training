@@ -2,68 +2,50 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/spf13/pflag"
+	//	"net/http"
+	// "github.com/gin-gonic/gin"
+)
+
+var (
+	mode   string
+	params []int
 )
 
 func main() {
-	var mode string
-	fmt.Println("Enter the operation : ")
-	fmt.Scan(&mode)
-	var num1, num2 float64
-	fmt.Println("Enter first number : ")
-	fmt.Scan(&num1)
-	fmt.Println("Enter second number : ")
-	fmt.Scan(&num2)
-	switch mode {
-	case "+":
-		sum(num1, num2)
-	case "-":
-		sustract(num1, num2)
-	case "*":
-		multiply(num1, num2)
-	case "/":
-		divide(num1, num2)
-	default:
-		fmt.Println("Invalid operator")
-	}
+	//	r := gin.Default()
+	//	r.GET("/ping", func(c *gin.Context) {
+	//		c.JSON(http.StatusOK, gin.H{
+	//			"message": "pong",
+	//		})
+	//	})
+	//	r.Run()
+	pflag.StringVar(&mode, "mode", "", "Mode of the calculator to use")
+	pflag.IntSliceVar(&params, "params", []int{}, "Parameters")
+	pflag.Parse()
+	result := calculate()
+	fmt.Println(len(params))
+	fmt.Println("Results:", result)
 }
+func calculate() int {
+	result := params[0]
 
-func sum(num1, num2 float64) {
-	var resultadosum float64
-	resultadosum = num1 + num2
-	fmt.Println("The result is: ", resultadosum)
-	return
-}
-
-func sustract(num1, num2 float64) {
-	var resultadosustract float64
-	resultadosustract = num1 - num2
-	fmt.Println("The result is: ", resultadosustract)
-	return
-}
-
-func multiply(num1, num2 float64) {
-	var resultadomul float64
-	resultadomul = num1 * num2
-	fmt.Println("The result is: ", resultadomul)
-	return
-}
-
-func divide(num1, num2 float64) {
-	switch num2 {
-	case 0:
-		fmt.Println("You cant divide by 0")
-		return
-	default:
-		switch num1 {
-		case 0:
-			fmt.Println("The result is : 0")
-			return
+	for i := 1; i < len(params); i++ {
+		switch mode {
+		case "sum":
+			result += params[i]
+		case "sustract":
+			result -= params[i]
+		case "multiply":
+			result *= params[i]
+		case "divide":
+			result /= params[i]
 		default:
-			var resultadodiv float64
-			resultadodiv = num1 / num2
-			fmt.Println("The result is: ", resultadodiv)
-			return
+			fmt.Println("Operación no válida")
+			return 0
 		}
 	}
 
+	return result
 }
